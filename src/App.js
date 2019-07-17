@@ -3,7 +3,17 @@ import './App.css';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
+import FormControl from '@material-ui/core/FormControl';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import IconButton from '@material-ui/core/IconButton';
+
 var sha256 = require('js-sha256');
+
+
 
 class App extends Component{
 
@@ -16,15 +26,22 @@ class App extends Component{
       name : "" ,
       password : "" ,
       repassword : "" ,
-      cc : ""
+      showPassword: false ,
+      showPassword2: false 
+      
     }
+     
     this.Click = this.Click.bind(this);
     this.onChangeUser = this.onChangeUser.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
     this.Reset = this.Reset.bind(this);
     this.onChangerePassword = this.onChangerePassword.bind(this);
+    this.ShowPasswords = this.ShowPasswords.bind(this);
+    this.ShowPasswords2 = this.ShowPasswords2.bind(this); 
+  
   }
 
+  
 
   Click(e){
     e.preventDefault();
@@ -78,28 +95,70 @@ class App extends Component{
 
   
 
+  ShowPasswords(){
+    this.setState({showPassword : ! this.state.showPassword})
+  }
+
+  ShowPasswords2(){
+    this.setState({showPassword2 : ! this.state.showPassword2})
+  }
+
   Reset(e){
     e.preventDefault();
     this.setState({name : "" , password : "" , repassword : ""})
   }
 
   
-
-
+  
+// HTML
   render(){
+    
     return(
-      <div className = 'App'>
+      <div className = 'UsernameBox'>
         <br></br><br></br><br></br><br></br><br></br><br></br>
-        <p>Username : </p>
-        <TextField onChange = {this.onChangeUser} value = {this.state.name} helperText="Character or Digit 4-16"/>
+        
+        <TextField onChange = {this.onChangeUser} value = {this.state.name} helperText="Character or Digit 4-16" label="Username" />
+
+    
         <br></br><br></br>
-        <p>Password : </p>
-        <TextField onChange = {this.onChangePassword} value = {this.state.password} type="password" helperText="Character or Digit 8-16"/>
+        <FormControl>
+        <InputLabel htmlFor="adornment-password">Password</InputLabel>
+        <Input
+          id="adornment-password"
+          type={this.state.showPassword ? 'text' : 'password'}
+          value={this.state.password}
+          onChange = {this.onChangePassword}
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton aria-label="Toggle password visibility" onClick={this.ShowPasswords}>
+                {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
+              </IconButton>
+            </InputAdornment>
+          }
+        />
+      </FormControl>
         <br></br><br></br>
 
-        <p>Re-Password : </p>
-        <TextField value = {this.state.repassword}  onChange = {this.onChangerePassword} type="password" helperText="Character or Digit 8-16"/>
+        <FormControl>
+        <InputLabel htmlFor="adornment-password">Re-Password</InputLabel>
+        <Input
+          id="adornment-password"
+          type={this.state.showPassword2 ? 'text' : 'password'}
+          value={this.state.repassword}
+          onChange = {this.onChangerePassword}
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton aria-label="Toggle password visibility" onClick={this.ShowPasswords2}>
+                {this.state.showPassword2 ? <Visibility /> : <VisibilityOff />}
+              </IconButton>
+            </InputAdornment>
+          }
+        />
+      </FormControl>
         <br></br><br></br>
+
+    
+
 
         <br></br><br></br><br></br>
         <Button variant="contained" color="primary" onClick = {this.Click}>
